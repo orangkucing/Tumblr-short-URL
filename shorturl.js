@@ -40,7 +40,7 @@ K.show = function (loading) {
         status_id_item = "status ID:&nbsp;" + K.statusId + "<br />";
     }
     document.getElementById(K.myname + "_buf").innerHTML =
-	"<p>" +
+    "<p>" +
     "short URL:&nbsp;" + "<a href=\"" + shorturl + "\">" + shorturl + "</a><br />" + 
     "screen name:&nbsp;" + K.screenName + " (user ID:&nbsp;" + K.userId + ")<br />" +
     "reblog key:&nbsp;" + K.reblogKey + "<br />" +
@@ -70,7 +70,7 @@ K.readShortURLPrefix = function (obj) {
     if (K.page) {
         var i;
         var m;
-	    K.userId = obj[0].user.id;
+        K.userId = obj[0].user.id;
         for (i = 0; ; i++) {
             if (!obj[i]) break;
             if (obj[i].text.match(/^RT/)) continue;
@@ -90,7 +90,7 @@ K.readShortURLPrefix = function (obj) {
         K.readStatusId(null);
         return;
     }
-	K.show("");
+    K.show("");
 }
 
 K.readScreenName = function (obj) {
