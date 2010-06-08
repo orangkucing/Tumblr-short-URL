@@ -18,17 +18,12 @@ K.execJson = function (t, u) {
 }
 
 K.show = function (loading) {
-    var base36 = new Array(
-        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-        "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
-        "u", "v", "w", "x", "y", "z" );
     function base36String (n) {
         var m = "";
         var r;
         do {
             r = n % 36;
-            m = base36[r].concat(m);
+            m = "0123456789abcdefghijklmnopqrstuvwxyz".substring(r,r+1).concat(m);
             n = (n - r) / 36;
         } while (n);
         return m;
@@ -40,7 +35,7 @@ K.show = function (loading) {
         status_id_item = "status ID:&nbsp;" + K.statusId + "<br />";
     }
     document.getElementById(K.myname + "_buf").innerHTML =
-	"<p>" +
+    "<p>" +
     "short URL:&nbsp;" + "<a href=\"" + shorturl + "\">" + shorturl + "</a><br />" + 
     "screen name:&nbsp;" + K.screenName + " (user ID:&nbsp;" + K.userId + ")<br />" +
     "reblog key:&nbsp;" + K.reblogKey + "<br />" +
@@ -70,7 +65,7 @@ K.readShortURLPrefix = function (obj) {
     if (K.page) {
         var i;
         var m;
-	    K.userId = obj[0].user.id;
+        K.userId = obj[0].user.id;
         for (i = 0; ; i++) {
             if (!obj[i]) break;
             if (obj[i].text.match(/^RT/)) continue;
@@ -90,7 +85,7 @@ K.readShortURLPrefix = function (obj) {
         K.readStatusId(null);
         return;
     }
-	K.show("");
+    K.show("");
 }
 
 K.readScreenName = function (obj) {
