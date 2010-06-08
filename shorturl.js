@@ -13,7 +13,7 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.execJson = function (t, u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = t ? K.tunnel + u.replace(/^[^?]*\?/, '?') : u;
+    s.src = t ? u.replace(/^[^?]*\?/, t + '?') : u;
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -101,7 +101,7 @@ K.result = function () {
     var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
     var basename = m[1];
     K.postId = m[2];
-	delete K.statusId;
+    delete K.statusId;
     delete K.shortURLPrefix;
     document.getElementById(K.myname + "_buf").innerHTML = "Loading...";
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
