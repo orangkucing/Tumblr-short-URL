@@ -51,7 +51,7 @@ K.P = function (obj) {
         var i;
         var m;
         K.userId = obj[0].user.id;
-		K.show(true);
+        K.show(true);
         for (i = 0; i < obj.length; i++) {
             if (f && !K.statusId)
                 if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
@@ -83,7 +83,7 @@ K.SN = function (obj) {
     }
     K.screenName = obj.tumblelog.name;
     K.reblogKey = obj.posts[0]["reblog-key"];
-	K.show(true);
+    K.show(true);
     K.page = 0;
     K.P(null);
 }
@@ -96,7 +96,7 @@ K.result = function () {
     delete K.shortURLPrefix;
     delete K.screenName;
     delete K.reblogKey;
-	delete K.userId;
+    delete K.userId;
     K.show(true);
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
