@@ -1,0 +1,3 @@
+Tumblr permalink to short URL converter
+
+Tumblr uses its own short URL scheme when automatically posting to Twitter. But afterward these URLs are hidden and not available from a blog unless explicitly included by its theme. Here written is a short javascript code to reveal short URL. This also shows owner’s screen name, reblog key (for Tumblr native API), and status ID (for Twitter compatible API). Enjoy!
