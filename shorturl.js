@@ -1,6 +1,6 @@
 // everything is contained in one global object.
-orangkucing_shorturl = new Object();
-orangkucing_shorturl.myname = "orangkucing_shorturl";
+orngkcng_s = new Object();
+orngkcng_s.myname = "orngkcng_s";
 
 (function (K) {
 
@@ -13,7 +13,7 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.execJson = function (t, u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = t ? K.tunnel + '?url=' + u.replace(/\?/, '&') : u;
+    s.src = t ? K.tunnel + u.replace(/^[^?]*\?/, '?') : u;
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -43,31 +43,29 @@ K.show = function (loading) {
     "</p>";
 }
 
-K.readStatusId = function (obj) {
+K.SI = function (obj) {
     if (K.page) {
         var i;
-        for (i = 0; ; i++) {
-            if (!obj[i]) break;
-            if (parseInt(K.postId) == parseInt(obj[i].id / 65536)) {
+        for (i = 0; i < obj.length; i++) {
+            if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
                 K.statusId = obj[i].id;
                 break;
             }
         }
     }
     if (!K.statusId) {
-        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".readStatusId&count=200&page=" + (++K.page));
+        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".SI&count=200&page=" + ++K.page);
         return;
     }
     K.show("");
 }
 
-K.readShortURLPrefix = function (obj) {
+K.P = function (obj) {
     if (K.page) {
         var i;
         var m;
         K.userId = obj[0].user.id;
-        for (i = 0; ; i++) {
-            if (!obj[i]) break;
+        for (i = 0; i < obj.length; i++) {
             if (obj[i].text.match(/^RT/)) continue;
             if (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/)) {
                 K.shortURLPrefix = m[1];
@@ -76,19 +74,19 @@ K.readShortURLPrefix = function (obj) {
         }
     }
     if (!K.shortURLPrefix) {
-        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".readShortURLPrefix&count=200&page=" + (++K.page));
+        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
         return;
     }
     if (document[K.myname + "_inputform"].detail.checked) {
         K.show("Loading...");
         K.page = 0;
-        K.readStatusId(null);
+        K.SI(null);
         return;
     }
     K.show("");
 }
 
-K.readScreenName = function (obj) {
+K.SN = function (obj) {
     if (!obj.tumblelog.name || !obj.posts[0]["reblog-key"]) {
         document.getElementById(K.myname + "_buf").innerHTML = "This URL is not a Tumblr blog...";
         return;
@@ -96,7 +94,7 @@ K.readScreenName = function (obj) {
     K.screenName = obj.tumblelog.name;
     K.reblogKey = obj.posts[0]["reblog-key"];
     K.page = 0;
-    K.readShortURLPrefix(null);
+    K.P(null);
 }
 
 K.result = function () {
@@ -106,7 +104,7 @@ K.result = function () {
 	delete K.statusId;
     delete K.shortURLPrefix;
     document.getElementById(K.myname + "_buf").innerHTML = "Loading...";
-    K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".readScreenName&id=" + K.postId);
+    K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
 document.write("<form name=\"" + K.myname + "_inputform\">");
@@ -120,4 +118,4 @@ document.write("</form>");
 document.write("<div id=\"" + K.myname + "_buf\">");
 document.write("</div>");
 
-})(orangkucing_shorturl);
+})(orngkcng_s);

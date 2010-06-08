@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use CGI;
 $Q = new CGI;
+$api = 'http://www.tumblr.com/statuses/user_timeline.json';
 
 sub Answer
 {
@@ -8,10 +9,9 @@ sub Answer
     $callback = $Q->param('callback');
     $count = $Q->param('count');
     $page = $Q->param('page');
-    $url = $Q->param('url');
     print $Q->header( -type => 'text/javascript' );
 
-    open(JS, '-|', 'curl -f ' . $url . '?screen_name=' . $screen_name . '&count=' . $count . '&page=' . $page);
+    open(JS, '-|', 'curl -f ' . $api . '?screen_name=' . $screen_name . '\&count=' . $count . '\&page=' . $page);
     print $callback . '(';
     while ($_ = <JS>) {
         print $_;
