@@ -36,7 +36,7 @@ K.show = function (loading) {
     }
     document.getElementById(K.myname + "_buf").innerHTML =
     "<p>" +
-    "short URL:&nbsp;" + "<a href=\"" + shorturl + "\">" + shorturl + "</a><br />" + 
+    "short URL:&nbsp;" + "<input type=\"text\" value=\"" + shorturl + "\" readonly=\"readonly\" onclick=\"this.select();\" style=\"font:11px \'Lucida Grande\', Verdana,sans-serif; width: 170px;\"/><br />" + 
     "screen name:&nbsp;" + K.screenName + " (user ID:&nbsp;" + K.userId + ")<br />" +
     "reblog key:&nbsp;" + K.reblogKey + "<br />" +
     status_id_item + loading +
