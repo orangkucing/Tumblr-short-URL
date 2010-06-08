@@ -103,6 +103,8 @@ K.result = function () {
     var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
     var basename = m[1];
     K.postId = m[2];
+	delete K.statusId;
+    delete K.shortURLPrefix;
     document.getElementById(K.myname + "_buf").innerHTML = "Loading...";
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".readScreenName&id=" + K.postId);
 }
