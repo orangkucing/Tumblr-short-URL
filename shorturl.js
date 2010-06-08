@@ -45,47 +45,35 @@ K.show = function (loading) {
     "</p>";
 }
 
-K.SI = function (obj) {
-    if (K.page) {
-        var i;
-        for (i = 0; i < obj.length; i++) {
-            if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
-                K.statusId = obj[i].id;
-                break;
-            }
-        }
-    }
-    if (!K.statusId) {
-        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".SI&count=200&page=" + ++K.page);
-        return;
-    }
-    K.show(false);
-}
-
 K.P = function (obj) {
+    var f = document[K.myname + "_inputform"].detail.checked;
     if (K.page) {
         var i;
         var m;
         K.userId = obj[0].user.id;
+		K.show(true);
         for (i = 0; i < obj.length; i++) {
-            if (obj[i].text.match(/^RT/)) continue;
-            if (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/)) {
-                K.shortURLPrefix = m[1];
-                break;
-            }
+            if (f && !K.statusId)
+                if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
+                    K.statusId = obj[i].id;
+                    if (K.shortURLPrefix) {
+                        K.show(false);
+                        return;
+                    }
+                    K.show(true);
+                }
+            if (!K.shortURLPrefix)
+                if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/))) {
+                    K.shortURLPrefix = m[1];
+                    if (!f || K.statusId) {
+                        K.show(false);
+                        return;
+                    }
+                    K.show(true);
+                }
         }
     }
-    if (!K.shortURLPrefix) {
-        K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
-        return;
-    }
-    if (document[K.myname + "_inputform"].detail.checked) {
-        K.show(true);
-        K.page = 0;
-        K.SI(null);
-        return;
-    }
-    K.show(false);
+    K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
 }
 
 K.SN = function (obj) {
