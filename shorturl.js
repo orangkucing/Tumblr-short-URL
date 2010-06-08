@@ -28,18 +28,20 @@ K.show = function (loading) {
         } while (n);
         return m;
     }
-
-    var shorturl = "http://tumblr.com/x" + K.shortURLPrefix + base36String(K.postId);
-    var status_id_item = "";
-    if (K.statusId) {
-        status_id_item = "status ID:&nbsp;" + K.statusId + "<br />";
-    }
     document.getElementById(K.myname + "_buf").innerHTML =
     "<p>" +
-    "short URL:&nbsp;" + "<input type=\"text\" value=\"" + shorturl + "\" readonly=\"readonly\" onclick=\"this.select();\" style=\"font:11px \'Lucida Grande\', Verdana,sans-serif; width: 170px;\"/><br />" + 
-    "screen name:&nbsp;" + K.screenName + " (user ID:&nbsp;" + K.userId + ")<br />" +
-    "reblog key:&nbsp;" + K.reblogKey + "<br />" +
-    status_id_item + loading +
+    (K.screenName ? "screen name:&nbsp;" + K.screenName + 
+        (K.userId ? " (user ID:&nbsp;" + K.userId + ")" : "") +
+        "<br />" : "") +
+    (K.reblogKey ? "reblog key:&nbsp;" + K.reblogKey + "<br />" : "") +
+    (K.shortURLPrefix ?
+        "short URL:&nbsp;" + 
+        "<input type=\"text\" value=\"http://tumblr.com/x" + 
+        K.shortURLPrefix + base36String(K.postId) +
+        "\" readonly=\"readonly\" onclick=\"this.select();\" style=\"font:11px \'Lucida Grande\', Verdana,sans-serif; width: 170px;\"/><br />" : "") +
+    (K.statusId ?
+        "status ID:&nbsp;" + K.statusId + "<br />" : "") +
+    (loading ? "Loading..." : "") +
     "</p>";
 }
 
@@ -57,7 +59,7 @@ K.SI = function (obj) {
         K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".SI&count=200&page=" + ++K.page);
         return;
     }
-    K.show("");
+    K.show(false);
 }
 
 K.P = function (obj) {
@@ -78,12 +80,12 @@ K.P = function (obj) {
         return;
     }
     if (document[K.myname + "_inputform"].detail.checked) {
-        K.show("Loading...");
+        K.show(true);
         K.page = 0;
         K.SI(null);
         return;
     }
-    K.show("");
+    K.show(false);
 }
 
 K.SN = function (obj) {
@@ -93,6 +95,7 @@ K.SN = function (obj) {
     }
     K.screenName = obj.tumblelog.name;
     K.reblogKey = obj.posts[0]["reblog-key"];
+	K.show(true);
     K.page = 0;
     K.P(null);
 }
@@ -103,7 +106,10 @@ K.result = function () {
     K.postId = m[2];
     delete K.statusId;
     delete K.shortURLPrefix;
-    document.getElementById(K.myname + "_buf").innerHTML = "Loading...";
+    delete K.screenName;
+    delete K.reblogKey;
+	delete K.userId;
+    K.show(true);
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
