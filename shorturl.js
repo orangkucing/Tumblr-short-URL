@@ -30,13 +30,9 @@ K.show = function (s) {
         return m;
     }
     document.getElementById(K.myname + "_buf").innerHTML =
-    (K.screenName ?
-        "screen name:&nbsp;" + K.screenName + (K.userId ? " (user ID:&nbsp;" + K.userId + ")" : "") +
-    "<br />" : "") +
-    (K.reblogKey ?
-        "reblog key:&nbsp;" + K.reblogKey +
-    "<br />" : "") +
-    (K.shortURLPrefix ?
+    (K.screenName && "screen name:&nbsp;" + K.screenName + (K.userId && " (user ID:&nbsp;" + K.userId + ")") + "<br />") +
+    (K.reblogKey && "reblog key:&nbsp;" + K.reblogKey + "<br />") +
+    (K.shortURLPrefix &&
         "short URL:&nbsp;" +
         "<input " +
         "type=\"text\" " +
@@ -44,12 +40,9 @@ K.show = function (s) {
         "readonly=\"readonly\" " + 
         "onclick=\"this.select();\" " +
         "style=\"font: 11px \'Lucida Grande\',Verdana,sans-serif; width: 175px;\" " +
-        "/>" +
-    "<br />" : "") +
-    (K.statusId ?
-        "status ID:&nbsp;" + K.statusId +
-    "<br />" : "") +
-    (s ? K.msgs[s] : "");
+        "/>" + "<br />") +
+    (K.statusId && "status ID:&nbsp;" + K.statusId + "<br />") +
+    (s && K.msgs[s]);
 }
 
 K.P = function (obj) {
@@ -96,15 +89,15 @@ K.SN = function (obj) {
     K.reblogKey = obj.posts[0]["reblog-key"];
     K.show("loading");
     K.page = 0;
-    K.P(null);
+    K.P("");
 }
 
 K.result = function () {
-    delete K.statusId;
-    delete K.shortURLPrefix;
-    delete K.screenName;
-    delete K.reblogKey;
-    delete K.userId;
+    K.statusId = "";
+    K.shortURLPrefix = "";
+    K.screenName = "";
+    K.reblogKey = "";
+    K.userId = "";
     var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
     if (!m) {
         K.show("notumblelog");
