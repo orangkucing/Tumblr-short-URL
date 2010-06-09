@@ -5,18 +5,29 @@ $Q = new CGI;
 $Q->charset('utf-8');
 
 binmode(STDOUT, ":utf8");
-$api = 'http://www.tumblr.com/statuses/user_timeline.json';
 
+$api = $Q->param('api');
+$id = $Q->param('id');
 $screen_name = $Q->param('screen_name');
 $callback = $Q->param('callback');
 $count = $Q->param('count');
 $page = $Q->param('page');
 print $Q->header(-type=>'text/javascript');
 
-open(JS, '-|', 'curl -f ' . $api . '?screen_name=' . $screen_name . '\&count=' . $count . '\&page=' . $page);
-print $callback . '(';
-while ($_ = <JS>) {
-    print $_;
+if ($screen_name) {
+    open(JS, '-|', 'curl -s -f ' . $api . '?screen_name=' . $screen_name . '\&count=' . $count . '\&page=' . $page);
+    $buf = $callback . '(';
+    while ($_ = <JS>) {
+        $buf .= $_;
+    }
+    $buf .= ');';
+} else {
+    open(JS, '-|', 'curl -s -f ' . $api . '?callback=' . $callback . '\&id=' . $id);
+    $buf = "";
+    while ($_ = <JS>) {
+        $buf .= $_;
+    }
+    $buf = $callback . '();' unless $buf;
 }
-print ");\n";
 close(JS);
+print $buf;

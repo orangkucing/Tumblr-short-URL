@@ -8,13 +8,13 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
-    wait: "Check the URL if freeze...",
+    woops: "Woops. Something strange happend...",
 };
 
-K.execJson = function (t, u) {
+K.execJson = function (u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = t ? u.replace(/^[^?]*\?/, t + '?') : u;
+    s.src = K.tunnel + '?api=' + u.replace(/\?/, '&');
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -53,6 +53,10 @@ K.show = function (s) {
 }
 
 K.P = function (obj) {
+    if (arguments.length != 1) {
+        K.show("woops");
+        return;
+    }
     var f = document[K.myname + "_inputform"].detail.checked;
     if (K.page) {
         var i;
@@ -80,11 +84,11 @@ K.P = function (obj) {
                 }
         }
     }
-    K.execJson(K.tunnel, K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
+    K.execJson(K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
 }
 
 K.SN = function (obj) {
-    if (!obj.tumblelog.name || !obj.posts[0]["reblog-key"]) {
+    if (arguments.length != 1 || !obj.tumblelog.name || !obj.posts[0]["reblog-key"]) {
         K.show("notumblelog");
         return;
     }
@@ -96,16 +100,20 @@ K.SN = function (obj) {
 }
 
 K.result = function () {
-    var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
-    var basename = m[1];
-    K.postId = m[2];
     delete K.statusId;
     delete K.shortURLPrefix;
     delete K.screenName;
     delete K.reblogKey;
     delete K.userId;
-    K.show("wait");
-    K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
+    var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
+    if (!m) {
+        K.show("notumblelog");
+        return;
+    }
+    var basename = m[1];
+    K.postId = m[2];
+    K.show("loading");
+    K.execJson(basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
 document.write("<form name=\"" + K.myname + "_inputform\">");
