@@ -2,9 +2,13 @@
 
 // since Tumblr's Twitter compatible API supports JSON but JSONP
 // we need a CGI server to pad a callback function name.
-K.tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi";
+K.tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi"; // CHANGE HERE IF NEEDED
 
 K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
+K.msgs = {
+    notumblelog: "This URL is not a Tumblr blog...",
+    loading: "Loading...",
+};
 
 K.execJson = function (t, u) {
     var s = document.createElement("script");
@@ -13,7 +17,7 @@ K.execJson = function (t, u) {
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
-K.show = function (loading) {
+K.show = function (s) {
     function base36String (n) {
         var m = "";
         var r;
@@ -25,20 +29,26 @@ K.show = function (loading) {
         return m;
     }
     document.getElementById(K.myname + "_buf").innerHTML =
-    "<p>" +
-    (K.screenName ? "screen name:&nbsp;" + K.screenName + 
-        (K.userId ? " (user ID:&nbsp;" + K.userId + ")" : "") +
-        "<br />" : "") +
-    (K.reblogKey ? "reblog key:&nbsp;" + K.reblogKey + "<br />" : "") +
+    (K.screenName ?
+        "screen name:&nbsp;" + K.screenName + (K.userId ? " (user ID:&nbsp;" + K.userId + ")" : "") +
+    "<br />" : "") +
+    (K.reblogKey ?
+        "reblog key:&nbsp;" + K.reblogKey +
+    "<br />" : "") +
     (K.shortURLPrefix ?
-        "short URL:&nbsp;" + 
-        "<input type=\"text\" value=\"http://tumblr.com/x" + 
-        K.shortURLPrefix + base36String(K.postId) +
-        "\" readonly=\"readonly\" onclick=\"this.select();\" style=\"font:11px \'Lucida Grande\', Verdana,sans-serif; width: 170px;\"/><br />" : "") +
+        "short URL:&nbsp;" +
+        "<input " +
+        "type=\"text\" " +
+        "value=\"http://tumblr.com/x" + K.shortURLPrefix + base36String(K.postId) + "\" " +
+        "readonly=\"readonly\" " + 
+        "onclick=\"this.select();\" " +
+        "style=\"font: 11px \'Lucida Grande\',Verdana,sans-serif; width: 175px;\" " +
+        "/>" +
+    "<br />" : "") +
     (K.statusId ?
-        "status ID:&nbsp;" + K.statusId + "<br />" : "") +
-    (loading ? "Loading..." : "") +
-    "</p>";
+        "status ID:&nbsp;" + K.statusId +
+    "<br />" : "") +
+    (s ? K.msgs[s] : "");
 }
 
 K.P = function (obj) {
@@ -47,25 +57,25 @@ K.P = function (obj) {
         var i;
         var m;
         K.userId = obj[0].user.id;
-        K.show(true);
+        K.show("loading");
         for (i = 0; i < obj.length; i++) {
             if (f && !K.statusId)
                 if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
                     K.statusId = obj[i].id;
                     if (K.shortURLPrefix) {
-                        K.show(false);
+                        K.show("");
                         return;
                     }
-                    K.show(true);
+                    K.show("loading");
                 }
             if (!K.shortURLPrefix)
                 if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/))) {
                     K.shortURLPrefix = m[1];
                     if (!f || K.statusId) {
-                        K.show(false);
+                        K.show("");
                         return;
                     }
-                    K.show(true);
+                    K.show("loading");
                 }
         }
     }
@@ -74,12 +84,12 @@ K.P = function (obj) {
 
 K.SN = function (obj) {
     if (!obj.tumblelog.name || !obj.posts[0]["reblog-key"]) {
-        document.getElementById(K.myname + "_buf").innerHTML = "This URL is not a Tumblr blog...";
+        K.show("notumblelog");
         return;
     }
     K.screenName = obj.tumblelog.name;
     K.reblogKey = obj.posts[0]["reblog-key"];
-    K.show(true);
+    K.show("loading");
     K.page = 0;
     K.P(null);
 }
@@ -93,7 +103,7 @@ K.result = function () {
     delete K.screenName;
     delete K.reblogKey;
     delete K.userId;
-    K.show(true);
+    K.show("loading");
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
@@ -115,7 +125,7 @@ document.write("</div>");
 // since multiple use can be happen in one tumblelog page.
 var pos = document.getElementsByTagName('script').length - 1;
 eval(global_obj_name + pos + " = new Object();");
-eval(global_obj_name + pos + ".myname = \"" + global_obj_name + pos + "\"");
+eval(global_obj_name + pos + ".myname = \"" + global_obj_name + pos + "\";");
 return eval(global_obj_name + pos);
 })(
 "orngkcng_s" // CHANGE HERE IF NEEDED
