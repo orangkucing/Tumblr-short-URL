@@ -14,7 +14,7 @@ K.msgs = {
 K.execJson = function (u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = K.tunnel + '?api=' + u.replace(/\?/, '&');
+    s.src = K.tunnel + "?api=" + u.replace(/\?/, "&");
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -119,7 +119,7 @@ K.result = function () {
 document.write("<form name=\"" + K.myname + "_inputform\">");
 document.write("Permalink:");
 document.write("<br />");
-document.write("<input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"40\">");
+document.write("<input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"50\">");
 document.write("<br />");
 document.write("<input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">");
 document.write("<input type=\"checkbox\" name=\"detail\">Show status ID");
@@ -132,7 +132,7 @@ document.write("</div>");
 // 1. everything belongs to one object named orngkcng_sXX 
 // 2. where XX is the position of inclusion of this script
 // since multiple use can be happen in one tumblelog page.
-var pos = document.getElementsByTagName('script').length - 1;
+var pos = document.getElementsByTagName("script").length - 1;
 eval(global_obj_name + pos + " = new Object();");
 eval(global_obj_name + pos + ".myname = \"" + global_obj_name + pos + "\";");
 return eval(global_obj_name + pos);
