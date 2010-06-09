@@ -1,7 +1,3 @@
-// everything is contained in one global object.
-orngkcng_s = new Object();
-orngkcng_s.myname = "orngkcng_s";
-
 (function (K) {
 
 // since Tumblr's Twitter compatible API supports JSON but JSONP
@@ -112,4 +108,15 @@ document.write("</form>");
 document.write("<div id=\"" + K.myname + "_buf\">");
 document.write("</div>");
 
-})(orngkcng_s);
+})((function (global_obj_name) {
+// portability considerations:
+// 1. everything belongs to one object named orngkcng_sXX 
+// 2. where XX is the position of inclusion of this script
+// since multiple use can be happen in one tumblelog page.
+var pos = document.getElementsByTagName('script').length - 1;
+eval(global_obj_name + pos + " = new Object();");
+eval(global_obj_name + pos + ".myname = \"" + global_obj_name + pos + "\"");
+return eval(global_obj_name + pos);
+})(
+"orngkcng_s" // CHANGE HERE IF NEEDED
+));
