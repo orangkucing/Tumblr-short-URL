@@ -8,6 +8,7 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
+	wait: "Check the URL if freeze...",
 };
 
 K.execJson = function (t, u) {
@@ -103,7 +104,7 @@ K.result = function () {
     delete K.screenName;
     delete K.reblogKey;
     delete K.userId;
-    K.show("loading");
+    K.show("wait");
     K.execJson(false, basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
