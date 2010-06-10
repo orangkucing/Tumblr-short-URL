@@ -41,31 +41,31 @@ K.P = function (obj) {
         return;
     }
     var f = document[K.myname + "_inputform"].detail.checked;
-    if (K.page) {
-        var i;
-        var m;
+    var i;
+    var m;
+    if (K.page == 1) {
         K.userId = obj[0].user.id;
         K.show("loading");
-        for (i = 0; i < obj.length; i++) {
-            if (f && !K.statusId)
-                if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
-                    K.statusId = obj[i].id;
-                    if (K.shortURLPrefix) {
-                        K.show("");
-                        return;
-                    }
-                    K.show("loading");
+    }
+    for (i = 0; i < obj.length; i++) {
+        if (f && !K.statusId)
+            if (parseInt(K.postId, 10) == parseInt(obj[i].id / 65536, 10)) {
+                K.statusId = obj[i].id;
+                if (K.shortURLPrefix) {
+                    K.show("");
+                    return;
                 }
-            if (!K.shortURLPrefix)
-                if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/))) {
-                    K.shortURLPrefix = m[1];
-                    if (!f || K.statusId) {
-                        K.show("");
-                        return;
-                    }
-                    K.show("loading");
+                K.show("loading");
+            }
+        if (!K.shortURLPrefix)
+            if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/))) {
+                K.shortURLPrefix = m[1];
+                if (!f || K.statusId) {
+                    K.show("");
+                    return;
                 }
-        }
+                K.show("loading");
+            }
     }
     K.execJson(K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
 }
