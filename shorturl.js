@@ -8,7 +8,7 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
-    woops: "Woops. Something strange happend..."
+    woops: "Woops. The blog contains only uncommented reblogs..."
 };
 
 K.execJson = function (u) {
