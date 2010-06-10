@@ -15,7 +15,6 @@ K.execJson = function (u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
     s.src = K.tunnel + "?api=" + u.replace(/\?/, "&");
-    alert(s.src);
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -37,7 +36,7 @@ K.show = function (s) {
 }
 
 K.P = function (obj) {
-    if (K.page == 2 || arguments.length != 1) {
+    if (arguments.length != 1) {
         K.show("woops");
         return;
     }
@@ -67,6 +66,10 @@ K.P = function (obj) {
                 }
                 K.show("loading");
             }
+    }
+    if (K.page == 1) { // API does not support page parameter yet
+        K.show("woops");
+        return;
     }
     K.execJson(K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
 }
