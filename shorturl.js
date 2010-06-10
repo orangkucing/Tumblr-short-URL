@@ -19,16 +19,6 @@ K.execJson = function (u) {
 }
 
 K.show = function (s) {
-    function base36String (n) {
-        var m = "";
-        var r;
-        do {
-            r = n % 36;
-            m = "0123456789abcdefghijklmnopqrstuvwxyz".substring(r,r+1).concat(m);
-            n = (n - r) / 36;
-        } while (n);
-        return m;
-    }
     document.getElementById(K.myname + "_buf").innerHTML =
     (K.screenName && "screen name:&nbsp;" + K.screenName + (K.userId && " (user ID:&nbsp;" + K.userId + ")") + "<br />") +
     (K.reblogKey && "reblog key:&nbsp;" + K.reblogKey + "<br />") +
@@ -36,7 +26,7 @@ K.show = function (s) {
         "short URL:&nbsp;" +
         "<input " +
         "type=\"text\" " +
-        "value=\"http://tumblr.com/x" + K.shortURLPrefix + base36String(K.postId) + "\" " +
+        "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\" " +
         "readonly=\"readonly\" " + 
         "onclick=\"this.select();\" " +
         "style=\"font: 11px \'Lucida Grande\',Verdana,sans-serif; width: 175px;\" " +
