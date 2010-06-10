@@ -20,19 +20,19 @@ K.execJson = function (u) {
 
 K.show = function (s) {
     document.getElementById(K.myname + "_buf").innerHTML =
-    (K.screenName && "screen name:&nbsp;" + K.screenName + (K.userId && " (user ID:&nbsp;" + K.userId + ")") + "<br />") +
-    (K.reblogKey && "reblog key:&nbsp;" + K.reblogKey + "<br />") +
+    (K.screenName && "<div>name: " + K.screenName + (K.userId && " (" + K.userId + ")") + "</div>") +
+    (K.reblogKey && "<div>reblog key: " + K.reblogKey + "</div>") +
     (K.shortURLPrefix &&
-        "short URL:&nbsp;" +
+        "<div>short URL: " +
         "<input " +
         "type=\"text\" " +
         "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\" " +
         "readonly=\"readonly\" " + 
         "onclick=\"this.select();\" " +
-        "style=\"font: 11px \'Lucida Grande\',Verdana,sans-serif; width: 175px;\" " +
-        "/>" + "<br />") +
-    (K.statusId && "status ID:&nbsp;" + K.statusId + "<br />") +
-    (s && K.msgs[s]);
+        "size=\"31\" " +
+        "/>" + "</div>") +
+    (K.statusId && "<div>status ID: " + K.statusId + "</div>") +
+    (s && "<div>" + K.msgs[s] + "</div>");
 }
 
 K.P = function (obj) {
@@ -58,7 +58,7 @@ K.P = function (obj) {
                 K.show("loading");
             }
         if (!K.shortURLPrefix)
-            if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([0-9a-z]{2,2})[0-9a-z]+/))) {
+            if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([\da-z]{2,2})/))) {
                 K.shortURLPrefix = m[1];
                 if (!f || K.statusId) {
                     K.show("");
@@ -88,7 +88,7 @@ K.result = function () {
     K.screenName = "";
     K.reblogKey = "";
     K.userId = "";
-    var m = document[K.myname + "_inputform"].url.value.match(/^(http:\/\/.*)\/post\/([0-9]+)/);
+    var m = document[K.myname + "_inputform"].url.value.match(/^(.*)\/post\/([\d]+)/);
     if (!m) {
         K.show("notumblelog");
         return;
@@ -100,15 +100,12 @@ K.result = function () {
 }
 
 document.write("<form name=\"" + K.myname + "_inputform\">");
-document.write("Permalink:");
-document.write("<br />");
-document.write("<input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"50\">");
-document.write("<br />");
-document.write("<input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">");
-document.write("<input type=\"checkbox\" name=\"detail\">Show status ID");
+document.write("<div>Permalink:</div>");
+document.write("<div><input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\"></div>");
+document.write("<div><input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">");
+document.write("<input type=\"checkbox\" name=\"detail\">Show status ID</div>");
+document.write("<div id=\"" + K.myname + "_buf\"></div>");
 document.write("</form>");
-document.write("<div id=\"" + K.myname + "_buf\">");
-document.write("</div>");
 
 })((function (global_obj_name) {
 // portability considerations:
