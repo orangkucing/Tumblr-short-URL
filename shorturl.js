@@ -8,13 +8,14 @@ K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
 K.msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
-    woops: "Woops. The blog contains only uncommented reblogs..."
+    woops: "Woops. Something strange happened..."
 };
 
 K.execJson = function (u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
     s.src = K.tunnel + "?api=" + u.replace(/\?/, "&");
+    alert(s.src);
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
@@ -36,7 +37,7 @@ K.show = function (s) {
 }
 
 K.P = function (obj) {
-    if (arguments.length != 1) {
+    if (K.page == 2 || arguments.length != 1) {
         K.show("woops");
         return;
     }
