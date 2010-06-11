@@ -29,7 +29,7 @@ K.show = function (s) {
         "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\" " +
         "readonly=\"readonly\" " + 
         "onclick=\"this.select();\" " +
-        "style=\"width:190px\" " +
+        "style=\"width:190px;\" " +
         "/>" + "</div>") +
     (K.statusId && "<div>status ID: " + K.statusId + "</div>") +
     (s && "<div>" + K.msgs[s] + "</div>");
