@@ -103,12 +103,20 @@ K.result = function () {
     K.execJson(basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
-document.write("<form name=\"" + K.myname + "_inputform\">");
-document.write("<div><input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\" value=\"Tumblr permalink...\" onfocus=\"if (this.value == \'Tumblr permalink...\') {this.value = \'\';}\" onblur=\"if (this.value == \'\') {this.value = \'Tumblr permalink...\';}\"></div>");
-document.write("<div><input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">");
-document.write("<input type=\"checkbox\" name=\"detail\">Show status ID</div>");
-document.write("<div id=\"" + K.myname + "_buf\"></div>");
-document.write("</form>");
+document.write(
+"<form name=\"" + K.myname + "_inputform\">" +
+"<div>" +
+"<input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\" " +
+"value=\"Tumblr permalink...\" " +
+"onfocus=\"if (this.value == \'Tumblr permalink...\') {this.value = \'\';}\" " +
+"onblur=\"if (this.value == \'\') {this.value = \'Tumblr permalink...\';}\">" +
+"</div>" +
+"<div>" + 
+"<input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">" +
+"<input type=\"checkbox\" name=\"detail\">Show status ID" +
+"</div>" +
+"<div id=\"" + K.myname + "_buf\"></div>" +
+"</form>");
 
 })((function (global_obj_name) {
 // portability considerations:
