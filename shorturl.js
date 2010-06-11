@@ -104,8 +104,7 @@ K.result = function () {
 }
 
 document.write("<form name=\"" + K.myname + "_inputform\">");
-document.write("<div>Permalink:</div>");
-document.write("<div><input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\"></div>");
+document.write("<div><input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\" value=\"Tumblr permalink...\" onfocus=\"if (this.value == \'Tumblr permalink...\') {this.value = \'\';}\" onblur=\"if (this.value == \'\') {this.value = \'Tumblr permalink...\';}\"></div>");
 document.write("<div><input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">");
 document.write("<input type=\"checkbox\" name=\"detail\">Show status ID</div>");
 document.write("<div id=\"" + K.myname + "_buf\"></div>");
