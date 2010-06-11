@@ -29,7 +29,7 @@ K.show = function (s) {
         "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\" " +
         "readonly=\"readonly\" " + 
         "onclick=\"this.select();\" " +
-        "size=\"31\" " +
+        "style=\"width:190px\" " +
         "/>" + "</div>") +
     (K.statusId && "<div>status ID: " + K.statusId + "</div>") +
     (s && "<div>" + K.msgs[s] + "</div>");
@@ -106,7 +106,7 @@ K.result = function () {
 document.write(
 "<form name=\"" + K.myname + "_inputform\">" +
 "<div>" +
-"<input type=\"text\" name=\"url\" maxlength=\"1000\" size=\"46\" " +
+"<input type=\"text\" name=\"url\" style=\"width:260px;\" " +
 "value=\"Tumblr permalink...\" " +
 "onfocus=\"if (this.value == \'Tumblr permalink...\') {this.value = \'\';}\" " +
 "onblur=\"if (this.value == \'\') {this.value = \'Tumblr permalink...\';}\">" +
