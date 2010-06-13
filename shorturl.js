@@ -2,10 +2,10 @@
 
 // since Tumblr's Twitter compatible API supports JSON but JSONP
 // we need a CGI server to pad a callback function name.
-K.tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi"; // CHANGE HERE IF NEEDED
+const tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi"; // CHANGE HERE IF NEEDED
 
-K.user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
-K.msgs = {
+const user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
+const msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
     woops: "Woops. Something strange happened..."
@@ -14,25 +14,22 @@ K.msgs = {
 K.execJson = function (u) {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = K.tunnel + "?api=" + u.replace(/\?/, "&");
+    s.src = tunnel + "?api=" + u.replace("?", "&");
     document.getElementsByTagName("body")[0].appendChild(s);
 }
 
 K.show = function (s) {
+    var w = function (c, d, s) {
+        return c && (d && "<div>") + s + (d && "</div>");
+    }
     document.getElementById(K.myname + "_buf").innerHTML =
-    (K.screenName && "<div>name: " + K.screenName + (K.userId && " (" + K.userId + ")") + "</div>") +
-    (K.reblogKey && "<div>reblog key: " + K.reblogKey + "</div>") +
-    (K.shortURLPrefix &&
-        "<div>short URL: " +
-        "<input " +
-        "type=\"text\" " +
-        "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\" " +
-        "readonly=\"readonly\" " + 
-        "onclick=\"this.select();\" " +
-        "style=\"width:190px;\" " +
-        "/>" + "</div>") +
-    (K.statusId && "<div>status ID: " + K.statusId + "</div>") +
-    (s && "<div>" + K.msgs[s] + "</div>");
+    w(K.screenName, true, "name: " + K.screenName + w(K.userId, "", " (" + K.userId + ")")) +
+    w(K.reblogKey, true, "reblog key: " + K.reblogKey) +
+    w(K.shortURLPrefix, true,
+        "short URL: <input type=\"text\" readonly=\"readonly\" onclick=\"this.select();\" style=\"width:190px;\" " +
+        "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\">") +
+    w(K.statusId, true, "status ID: " + K.statusId) +
+    w(s, true, msgs[s]);
 }
 
 K.P = function (obj) {
@@ -58,7 +55,7 @@ K.P = function (obj) {
                 K.show("loading");
             }
         if (!K.shortURLPrefix)
-            if (!obj[i].text.match(/^RT/) && (m = obj[i].text.match(/http:\/\/tumblr\.com\/x([\da-z]{2,2})/))) {
+            if (!obj[i].text.match(/^RT/) && ((m = obj[i].text.match(/http:\/\/tumblr\.com\/x([\da-z]{2,2})/)))) {
                 K.shortURLPrefix = m[1];
                 if (!f || K.statusId) {
                     K.show("");
@@ -71,7 +68,7 @@ K.P = function (obj) {
         K.show("woops");
         return;
     }
-    K.execJson(K.user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
+    K.execJson(user_timeline + "?screen_name=" + K.screenName + "&callback=" + K.myname + ".P&count=200&page=" + ++K.page);
 }
 
 K.SN = function (obj) {
