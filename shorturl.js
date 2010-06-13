@@ -29,8 +29,8 @@ K.show = function (s) {
     w(K.screen_name, "name: " + K.screen_name + (K.userId &&  " (" + K.userId + ")")) +
     w(K.reblogKey, "reblog key: " + K.reblogKey) +
     w(K.shortURLPrefix,
-        "short URL: <input type=\"text\" readonly=\"readonly\" onclick=\"this.select();\" style=\"width:190px;\" " +
-        "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.id, 10).toString(36) + "\">") +
+        "short URL: <input type='text' readonly='readonly' onclick='this.select();' style='width:190px;' " +
+        "value='http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.id, 10).toString(36) + "'>") +
     w(K.statusId, "status ID: " + K.statusId) +
     w(s, msgs[s]);
 }
@@ -106,22 +106,22 @@ K.result = function () {
     K.show("loading");
     K.callback = K.myname + ".SN";
     K.api = basename + "/api/read/json";
-    K.execJson("api",  "callback", "id");
+    K.execJson("api", "callback", "id");
 }
 
 document.write(
-"<form name=\"" + K.myname + "_inputform\">" +
+"<form name='" + K.myname + "_inputform'>" +
 "<div>" +
-"<input type=\"text\" name=\"url\" style=\"width:260px;\" " +
-"value=\"" + watermark + "\" " +
-"onfocus=\"if (this.value == \'" + watermark + "\') {this.value = \'\';}\" " +
-"onblur=\"if (this.value == \'\') {this.value = \'" + watermark + "\';}\">" +
+"<input type='text' name='url' style='width:260px;' " +
+"value='" + watermark + "' " +
+"onfocus=\"if (this.value == '" + watermark + "') {this.value = '';}\" " +
+"onblur=\"if (this.value == '') {this.value = '" + watermark + "';}\">" +
 "</div>" +
 "<div>" + 
-"<input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">" +
-"<input type=\"checkbox\" name=\"detail\">Show status ID" +
+"<input type='button' value='Shorten' onclick='" + K.myname + ".result();'>" +
+"<input type='checkbox' name='detail'>Show status ID" +
 "</div>" +
-"<div id=\"" + K.myname + "_buf\"></div>" +
+"<div id='" + K.myname + "_buf'></div>" +
 "</form>");
 
 })((function (global_obj_name) {
@@ -131,7 +131,7 @@ document.write(
 // since multiple use can be happen in one tumblelog page.
 var pos = document.getElementsByTagName("script").length - 1;
 eval(global_obj_name + pos + " = new Object();");
-eval(global_obj_name + pos + ".myname = \"" + global_obj_name + pos + "\";");
+eval(global_obj_name + pos + ".myname = '" + global_obj_name + pos + "';");
 return eval(global_obj_name + pos);
 })(
 "orngkcng_s" // CHANGE HERE IF NEEDED
