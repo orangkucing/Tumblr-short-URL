@@ -5,6 +5,8 @@
 const tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi"; // CHANGE HERE IF NEEDED
 
 const user_timeline = "http://www.tumblr.com/statuses/user_timeline.json";
+const apipath = "/api/read/json";
+const watermark = "Tumblr permalink...";
 const msgs = {
     notumblelog: "This URL is not a Tumblr blog...",
     loading: "Loading...",
@@ -19,17 +21,17 @@ K.execJson = function (u) {
 }
 
 K.show = function (s) {
-    var w = function (c, d, s) {
-        return c && (d && "<div>") + s + (d && "</div>");
+    var w = function (c, s) {
+        return c && "<div>" + s + "</div>";
     }
     document.getElementById(K.myname + "_buf").innerHTML =
-    w(K.screenName, true, "name: " + K.screenName + w(K.userId, "", " (" + K.userId + ")")) +
-    w(K.reblogKey, true, "reblog key: " + K.reblogKey) +
-    w(K.shortURLPrefix, true,
+    w(K.screenName, "name: " + K.screenName + (K.userId &&  " (" + K.userId + ")")) +
+    w(K.reblogKey, "reblog key: " + K.reblogKey) +
+    w(K.shortURLPrefix,
         "short URL: <input type=\"text\" readonly=\"readonly\" onclick=\"this.select();\" style=\"width:190px;\" " +
         "value=\"http://tumblr.com/x" + K.shortURLPrefix + parseInt(K.postId, 10).toString(36) + "\">") +
-    w(K.statusId, true, "status ID: " + K.statusId) +
-    w(s, true, msgs[s]);
+    w(K.statusId, "status ID: " + K.statusId) +
+    w(s, msgs[s]);
 }
 
 K.P = function (obj) {
@@ -97,16 +99,16 @@ K.result = function () {
     var basename = m[1];
     K.postId = m[2];
     K.show("loading");
-    K.execJson(basename + "/api/read/json?callback=" + K.myname + ".SN&id=" + K.postId);
+    K.execJson(basename + apipath + "?callback=" + K.myname + ".SN&id=" + K.postId);
 }
 
 document.write(
 "<form name=\"" + K.myname + "_inputform\">" +
 "<div>" +
 "<input type=\"text\" name=\"url\" style=\"width:260px;\" " +
-"value=\"Tumblr permalink...\" " +
-"onfocus=\"if (this.value == \'Tumblr permalink...\') {this.value = \'\';}\" " +
-"onblur=\"if (this.value == \'\') {this.value = \'Tumblr permalink...\';}\">" +
+"value=\"" + watermark + "\" " +
+"onfocus=\"if (this.value == \'" + watermark + "\') {this.value = \'\';}\" " +
+"onblur=\"if (this.value == \'\') {this.value = \'" + watermark + "\';}\">" +
 "</div>" +
 "<div>" + 
 "<input type=\"button\" value=\"Shorten\" onclick=\"" + K.myname + ".result();\">" +
