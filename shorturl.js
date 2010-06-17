@@ -3,9 +3,9 @@
 var results = {
     "reblog-key": "",
     screen_name: "",
-    userID: "",
+    user_id: "",
     shortURL: "",
-    statusID: ""
+    status_id: ""
 };
 
 var id;
@@ -17,6 +17,8 @@ var execJson = function () {
     /* const */ var tunnel = "http://onecotravel.info/cgi-bin/tumblr/tunnel.cgi"; // CHANGE HERE IF NEEDED
 
     var s = document.createElement("script");
+    s.charset = "utf-8";
+    s.type = "text/javascript";
     s.src = tunnel + "?";
     for (var i = 0; i < arguments.length; i++) 
         s.src += arguments[i] + "&";
@@ -50,12 +52,12 @@ K.callback = function (obj) {
     var f = document[K + "_form"].detail.checked;
     var m;
     for (var i = 0; i < obj.length; i++) {
-        if (!results.userID) {
-            results.userID = obj[i].user.id;
+        if (!results.user_id) {
+            results.user_id = obj[i].user.id;
             show("loading");
         }
-        if (f && !results.statusID && parseInt(id, 10) == parseInt(obj[i].id / 65536, 10)) {
-            results.statusID = obj[i].id;
+        if (f && !results.status_id && parseInt(id, 10) == parseInt(obj[i].id / 65536, 10)) {
+            results.status_id = obj[i].id;
             if (results.shortURL)
                 return show("");
             show("loading");
@@ -64,7 +66,7 @@ K.callback = function (obj) {
             results.shortURL = 
                 "<input type='text' readonly='readonly' onclick='this.select();' style='width:30ex;' " +
                 "value='http://tumblr.com/x" + m[1] + parseInt(id, 10).toString(36) + "'>";
-            if (!f || results.statusID)
+            if (!f || results.status_id)
                 return show("");
             show("loading");
         }
@@ -96,7 +98,7 @@ document.write(
         "</div>" +
         "<div>" + 
             "<input type='button' value='Shorten' onclick='" + K + ".onclick();'>" +
-            "<input type='checkbox' name='detail'>Show statusID" +
+            "<input type='checkbox' name='detail'>Show status_id" +
         "</div>" +
         "<div id='" + K + "_div'></div>" +
     "</form>");
