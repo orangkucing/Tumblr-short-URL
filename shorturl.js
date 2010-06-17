@@ -62,7 +62,7 @@ K.callback = function (obj) {
         }
         if (!results.shortURL && !obj[i].text.match(/^RT/) && ((m = obj[i].text.match(/http:\/\/tumblr\.com\/x([\da-z]{2,2})/)))) {
             results.shortURL = 
-                "<input type='text' readonly='readonly' onclick='this.select();' style='width:190px;' " +
+                "<input type='text' readonly='readonly' onclick='this.select();' style='width:30ex;' " +
                 "value='http://tumblr.com/x" + m[1] + parseInt(id, 10).toString(36) + "'>";
             if (!f || results.statusID)
                 return show("");
@@ -89,7 +89,7 @@ K.onclick = function () {
 document.write(
     "<form name='" + K + "_form'>" +
         "<div>" +
-            "<input type='text' name='url' style='width:260px;' " +
+            "<input type='text' name='url' style='width:100%;' " +
             "value='" + watermark + "' " +
             "onfocus=\"if (this.value == '" + watermark + "') {this.value = '';}\" " +
             "onblur=\"if (this.value == '') {this.value = '" + watermark + "';}\">" +
