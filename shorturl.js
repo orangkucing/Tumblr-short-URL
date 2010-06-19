@@ -62,10 +62,10 @@ K.callback = function (obj) {
                 return show("");
             show("loading");
         }
-        if (!results.shortURL && !obj[i].text.match(/^RT/) && ((m = obj[i].text.match(/http:\/\/tumblr\.com\/([\da-z]{3,3})/)))) {
+        if (!results.shortURL && !obj[i].text.match(/^RT/) && ((m = obj[i].text.match(/(http:\/\/tumblr\.com\/[\da-z]{3,3})/)))) {
             results.shortURL = 
                 "<input type='text' readonly='readonly' onclick='this.select();' style='width:30ex;' " +
-                "value='http://tumblr.com/" + m[1] + parseInt(id, 10).toString(36) + "'>";
+                "value='" + m[1] + parseInt(id, 10).toString(36) + "'>";
             if (!f || results.status_id)
                 return show("");
             show("loading");
